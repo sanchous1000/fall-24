@@ -188,3 +188,12 @@
 
 <img src="img/image-14.png" width="600" height="400">
 
+#### Average Inter-Cluster Distance: Lower values indicate better separation between clusters.
+#### Conclusion: The implemented algorithms (both EM and DBSCAN) have lower average inter-cluster distances compared to their library counterparts, indicating better clustering performance.
+
+#### Average Intra-Cluster Distance: Lower values indicate that points within the same cluster are closer together.
+#### Conclusion: The library's EM algorithm has the lowest average intra-cluster distance, indicating better compactness within clusters. However, the implemented DBSCAN algorithm has a higher intra-cluster distance compared to the library version.
+
+#### Clustering Speed: Lower values indicate faster clustering.
+#### Conclusion: Both implemented and library algorithms performed fast but implemented algorithms are a little bit faster.
+
