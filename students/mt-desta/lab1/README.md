@@ -6,40 +6,40 @@
 
 #### 1.2 I have used pairplots of the given datasets to visualise the data in the data sets.
 
-<img src="image.png" width="400" height="400">
-<img src="image-1.png" width="400" height="400">
+<img src="img/image.png" width="400" height="400">
+<img src="img/image-1.png" width="400" height="400">
 
 ####  <p style='text-aligh: justify'> 1.3 As for the first dataset we have no clear indicator of the cluster shape. But looking at the shape between FinalGrade and StudyHours it seems to be an elongated cluster but I can't be sure. The second dataset we have somewhat clear clusters. the shape appears to be spherical. </p>
 
 #### <p style='text-aligh: justify'> 1.4 Though it is not clear, for the first dataset my assumption is 3 clusters by looking at the graph below but for the second dataset at least 5 clusters apear in the graph for Annual Income and Spending Score. </p>
 
-<img src="image-2.png" width="400" height="400">
-<img src="image-3.png" width="400" height="400">
+<img src="img/image-2.png" width="400" height="400">
+<img src="img/image-3.png" width="400" height="400">
 
 #### 2. I have implented a hierarchical algorithm based on Agglomerative clustering.
 
 #### 2.1 Dendrograms for the two datasets
 
-<img src="image-4.png" width="400" height="400">
-<img src="image-5.png" width="400" height="400">
+<img src="img/image-4.png" width="400" height="400">
+<img src="img/image-5.png" width="400" height="400">
         
 #### 2.2 I used the Elbow method and Silhouette method just incase to determine the optimal number of clusters for each dataset. 
     
-<img src="image-6.png" width="400" height="400">
-<img src="image-7.png" width="400" height="400">
+<img src="img/image-6.png" width="400" height="400">
+<img src="img/image-7.png" width="400" height="400">
     
 ####    According to the results for the Studet Performance Dataset 4 clusters seems to be the appropriate number. For the Mall Customers dataset, I chose 9 clusters. 
     
-<img src="image-8.png" width="400" height="400">
-<img src="image-9.png" width="400" height="400">
+<img src="img/image-8.png" width="400" height="400">
+<img src="img/image-9.png" width="400" height="400">
 
 #### 3. I have implemented EM algorithm and DBSCAN algorithm.
 
-<img src="image-10.png" width="400" height="400">
-<img src="image-11.png" width="400" height="400">
+<img src="img/image-10.png" width="400" height="400">
+<img src="img/image-11.png" width="400" height="400">
 
-<img src="image-12.png" width="400" height="400">
-<img src="image-13.png" width="400" height="400">
+<img src="img/image-12.png" width="400" height="400">
+<img src="img/image-13.png" width="400" height="400">
 
 #### 4. The following metrics were applied on those algorithms.
 ####    * Based on the clustering results, calculated the average intra-cluster distance;
@@ -186,5 +186,5 @@
 
 #### 6. Comparisons between implemented and reference algorithms is the following.
 
-<img src="image-14.png" width="600" height="400">
+<img src="img/image-14.png" width="600" height="400">
 
