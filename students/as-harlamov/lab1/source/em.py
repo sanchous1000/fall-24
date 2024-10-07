@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.stats import multivariate_normal
 
-from students.aharlamov.lab1.source.clustering import Clustering
+from clustering import Clustering
 
 
 class EMClustering(Clustering):

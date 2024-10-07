@@ -2,7 +2,7 @@ from itertools import product
 
 import pandas as pd
 
-from students.aharlamov.lab1.source.clustering import Clustering
+from clustering import Clustering
 
 
 class AgglomerativeClustering(Clustering):
@@ -14,6 +14,7 @@ class AgglomerativeClustering(Clustering):
         n = len(X)
         cluster_points = {(i,) for i in range(n)}
         cluster_centroids = {(i,): X.iloc[i].values for i in range(n)}
+        cluster_sizes = {(i,): 1 for i in range(n)}
 
         while len(cluster_points) > self.n_clusters:
             min_distance, cluster1, cluster2 = float('inf'), None, None
@@ -22,7 +23,10 @@ class AgglomerativeClustering(Clustering):
                 if x == y:
                     continue
 
-                distance = self.euclidean_distance(cluster_centroids[x], cluster_centroids[y])
+                n1, n2 = cluster_sizes[x], cluster_sizes[y]
+                centroid1, centroid2 = cluster_centroids[x], cluster_centroids[y]
+
+                distance = (n1 * n2) / (n1 + n2) * self.euclidean_distance(centroid1, centroid2)
                 if distance < min_distance:
                     min_distance = distance
                     cluster1, cluster2 = x, y
@@ -34,6 +38,7 @@ class AgglomerativeClustering(Clustering):
             new_cluster = cluster1 + cluster2
             cluster_points.add(new_cluster)
             cluster_centroids[new_cluster] = self.centroid(X.iloc[list(new_cluster)].values)
+            cluster_sizes[new_cluster] = len(new_cluster)
 
         self.labels_ = [0] * n
         for i, cluster in enumerate(cluster_points, 1):

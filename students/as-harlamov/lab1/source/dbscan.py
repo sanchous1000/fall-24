@@ -3,7 +3,7 @@ from collections import deque
 import numpy as np
 import pandas as pd
 
-from students.aharlamov.lab1.source.clustering import Clustering
+from clustering import Clustering
 
 
 class DBSCANClustering(Clustering):
