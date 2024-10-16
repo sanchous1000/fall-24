@@ -28,7 +28,7 @@
 
 #### Оптимальное количество кластеров: 7
 
-![Оптимальное количество кластеров](docs/mall_customer_silhouette.png)
+![Оптимальное количество кластеров](docs/countries_silhouette.png)
 
 ### Mall Customer Segmentation Data
 
@@ -38,7 +38,7 @@
 
 #### Оптимальное количество кластеров: 4
 
-![Оптимальное количество кластеров](docs/countries_silhouette.png)
+![Оптимальное количество кластеров](docs/mall_customer_silhouette.png)
 
 ## Задание 3
 

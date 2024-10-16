@@ -11,10 +11,14 @@ class AgglomerativeClustering(Clustering):
         super().__init__()
 
     def fit_predict(self, X: pd.DataFrame):
+        self.linkage = []
+
         n = len(X)
         cluster_points = {(i,) for i in range(n)}
         cluster_centroids = {(i,): X.iloc[i].values for i in range(n)}
         cluster_sizes = {(i,): 1 for i in range(n)}
+        cluster_numbers = {(i,): i for i in range(n)}
+        cluster_idx = n
 
         while len(cluster_points) > self.n_clusters:
             min_distance, cluster1, cluster2 = float('inf'), None, None
@@ -34,11 +38,15 @@ class AgglomerativeClustering(Clustering):
             if cluster1 is None or cluster2 is None:
                 break
 
+            self.linkage.append((cluster_numbers[cluster1], cluster_numbers[cluster2], min_distance, len(cluster1) + len(cluster2)))
+
             cluster_points -= {cluster1, cluster2}
             new_cluster = cluster1 + cluster2
             cluster_points.add(new_cluster)
             cluster_centroids[new_cluster] = self.centroid(X.iloc[list(new_cluster)].values)
             cluster_sizes[new_cluster] = len(new_cluster)
+            cluster_numbers[new_cluster] = cluster_idx
+            cluster_idx += 1
 
         self.labels_ = [0] * n
         for i, cluster in enumerate(cluster_points, 1):
