@@ -1,6 +1,6 @@
 import numpy as np
 
-def hierarchical_algorithm(distances):
+def hierarchy(distances):
     N = len(distances)
     powers = list(np.ones(N, dtype=np.int64))
 
