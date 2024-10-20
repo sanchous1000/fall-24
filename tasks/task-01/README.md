@@ -1,35 +1,34 @@
-# Лабораторная работа №1. Кластеризация
+# Laboratory work No. 1.Clastorization
 
-В рамках лабораторной работы предстоит реализовать различные алгоритмы кластеризации.
+As part of the laboratory work, various clustering algorithms will have to be implemented.
 
-На лекции были рассмотрены следующие алгоритмы:
-* Иерархическая кластеризация
-* Статистическая кластеризация
-  * EM-алгоритм
-  * K-means
-* DBSCAN
-* Сети Кохонена
+The following algorithms were considered at the lecture:
+* Hierarchical clustering
+* Statistical clustering
+* EM algorithm
+* K -means
+* Dbscan
+* Network of Kohonen
 
-## Задание
+## Exercise
 
-1. Выбрать датасеты для кластеризации (2 шт), например на [kaggle](https://www.kaggle.com/datasets?&tags=13304-Clustering);\
-    1.1. убрать из данных метки классов, если такие есть;\
-    1.2. визуализировать данные;\
-    1.3. определить "тип" кластеров;\
-    1.4. сформировать гипотезу о количестве кластеров;
-2. реализовать иерархический алгоритм;\
-    2.1. построить дендрограмму для каждого датасета;\
-    2.2. определить оптимальное число кластеров для каждого датасета;
-3. реализовать алгоритмы:
-   * EM-алгоритм;
-   * DBSCAN;
-4. для каждого алгоритма кластеризации и для каждого датасета:
-   * по результатам кластеризации посчитать среднее внутрикластерное расстояние;
-   * по результатам кластеризации посчитать среднее межкластерное расстояние;
-   * замерить скорость кластеризации;
-5. для алгоритмов иерархической кластеризации, статистических алгоритмов и DBSCAN взять [эталонные](https://scikit-learn.org/stable/) реализации и посчитать метрики на выбранных датасетах:
-   * среднее внутрикластерное расстояние;
-   * среднее межкластерное расстояние;
-   * скорость кластеризации;
-6. показать сравнения метрик на разработанных и эталонных алгоритмах.
-
+1. Choose datasets for clustering (2 pcs), for example, on [kaggle] (https://www.kaggle.com/datasets?&tags=13304-Clustering); \
+1.1.Remove the classes label from the data, if any; \
+1.2.visualize data; \
+1.3.Determine the "type" of clusters; \
+1.4.form a hypothesis about the number of clusters;
+2. To implement a hierarchical algorithm; \
+2.1.Build a dendrogram for each Dataset; \
+2.2.determine the optimal number of clusters for each dataset;
+3. To realize algorithms:
+* EM algorithm;
+* Dbscan;
+4. For each clustering algorithm and for each dataset:
+* Based on the results of clustering, calculate the average intraclaster distance;
+* Based on the results of clustering, calculate the average interclature distance;
+* measure the speed of clustering;
+5. For algorithms of hierarchical clustering, statistical algorithms and dbscan, take [reference] (https://scikit-learn.org/stable/) implementation and calculate metrics on selected datasets:
+* average intraclaster distance;
+* average interclature distance;
+* clustering speed;
+6. Show comparisons of metrics on developed and reference algorithms.
