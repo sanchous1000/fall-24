@@ -250,33 +250,6 @@ def plot_dendrogram(linkage_matrix, labels=None):
     plt.tight_layout()
     plt.show()
 
-# Example usage:
-# Creating a pandas DataFrame
-# df = pd.read_csv('data/Mall_Customers.csv')[['Annual Income (k$)', 'Spending Score (1-100)']]
-
-# linkage_matrix, final_clusters = hierarchical_clustering(df, method='centroid', num_clusters=3)
-
-# print("Linkage Matrix:")
-# print(linkage_matrix)
-# print("Final Clusters:")
-# print(final_clusters)
-
-# fig, ax = plt.subplots(figsize=(10, 6))
-
-# # Create the dendrogram
-# dendrogram(linkage_matrix, ax=ax, leaf_rotation=90, leaf_font_size=12)
-
-# # Set labels and limits
-# ax.set_xlabel("Data Points")
-# ax.set_ylabel("Distance")
-# ax.set_title("Dendrogram")
-
-# # Set y-axis limits with some padding
-# ax.set_ylim(0, np.max(linkage_matrix[:, 2]) * 1.1)
-
-# # Adjust layout and display the plot
-# plt.tight_layout()
-# plt.show()
 import numpy as np
 from scipy.spatial.distance import pdist, squareform
 import matplotlib.pyplot as plt
@@ -366,15 +339,3 @@ class MyAgglomerative:
         if self.metric == 'ward':
             return self._ward_distance(x, y, l1, l2)
         
-# df = pd.read_csv('data/Mall_Customers.csv')[['Annual Income (k$)', 'Spending Score (1-100)']]
-# link = MyAgglomerative(3,metric="ward")
-# res = link.fit_predict(df)
-
-# dendrogram(link.lm,
-#                orientation='top',
-#                distance_sort='descending',
-#                show_leaf_counts=True)
-# plt.title('Dendrogram')
-# plt.xlabel('Sample index')
-# plt.ylabel('Distance')
-# plt.show()

@@ -97,21 +97,4 @@ class my_dbscan:
 
 
 
-# # Testing DBSCAN with example data and DataFrame
-# if __name__ == "__main__":
-
-#     # Convert to DataFrame
-#     df = pd.read_csv('data/Mall_Customers.csv')[['Annual Income (k$)', 'Spending Score (1-100)']]
-
-#     # Parameters
-#     eps = 30 # Radius within which neighbors are considered
-#     min_samples = 10  # Minimum number of points to form a dense region
-
-#     # Apply DBSCAN
-#     dbscan = my_dbscan(eps=eps, min_samples=min_samples)
-#     labels = dbscan.fit_predict(df)
-
-#     # Plot the clusters
-#     dbscan.plot_clusters(df)
-
 

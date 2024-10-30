@@ -63,19 +63,4 @@ class my_GaussianMixtureEM:
         
         return predictions
     
-# df = pd.read_csv('data/Mall_Customers.csv')[['Annual Income (k$)', 'Spending Score (1-100)']]
-# em_df = my_GaussianMixtureEM(n_components=4)
-# em_df.fit(df)
-
-# clusters = em_df.fit_predict(df)
-# df['Cluster'] = clusters
-
-# # Visualize the results for first dataset
-# plt.figure(figsize=(10, 6))
-# scatter = plt.scatter(df['Annual Income (k$)'], df['Spending Score (1-100)'], c=df['Cluster'], cmap='viridis')
-# plt.title('EM Clustering of Mall Customers')
-# plt.colorbar(scatter, label='Cluster')
-
-
-# plt.show()
 

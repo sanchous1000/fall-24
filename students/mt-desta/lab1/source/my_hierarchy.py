@@ -161,6 +161,4 @@ h = my_HierarchicalClustering(n_clusters = 5, linkage='ward')
 
 labels = h.fit_predict(df.values)
 
-# h.plot_clusters(df.values)
-
 plot_all_linkage_methods(df.values,5)
