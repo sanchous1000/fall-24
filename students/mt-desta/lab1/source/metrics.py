@@ -9,6 +9,26 @@ from sklearn.mixture import GaussianMixture
 from sklearn.cluster import DBSCAN, AgglomerativeClustering
 
 class Metrics:
+    def mean_intracluster_distance_hier(lables):
+        intracluster_dists = []
+        for i in range(len(lables)):
+            cluster = np.asarray(lables[i])
+            cluster_dists = np.linalg.norm(cluster - cluster.mean(axis=0))
+            intracluster_dists.append(np.mean(cluster_dists))
+        
+        return np.mean(intracluster_dists)
+
+    def mean_intercluster_distance_hier(lables):
+        interclusters_dists = []
+        for i in range(len(lables)):
+            for j in range(len(lables)):
+                if i != j:
+                    for k in range(len(lables[i])):
+                        for k2 in range(len(lables[j])):
+                            interclusters_dists.append(np.linalg.norm(np.asarray(lables[i][k]) - np.asarray(lables[j][k2])))
+
+        return np.mean(interclusters_dists)
+
     def mean_intracluster_distance(self,x: pd.DataFrame, labels):
         X = x.to_numpy()
         d = self._labels_to_dict(X, labels)

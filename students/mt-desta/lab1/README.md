@@ -14,25 +14,41 @@
 
 #### 2. I have implented a hierarchical algorithm based on Agglomerative clustering. [my_hierarchy.py](./source/my_hierarchy.py) contains the code for this implementation. It takes the number of desired clusters, linkage method and a dataframe as arguements. It outputs the linkage matrix and labels. I have implemented a function tha takes these and plots a dendrogram.
 
+<img src="img/image2.png">
 <img src="img/image3.png">
-<img src="img/image4.png">
 
 #### 2.1 Dendrograms for the two datasets
+Dendrogram plotted using the implemented hierarchical algorithm.
+
+<img src="img/image4.png">
+
+Dendrogram using the reference algorithm.
 
 <img src="img/image5.png">
+
+As we can see in the figures, we have similar results.
         
 #### 2.2 Optimum number of Clusters
 
-#### <p style='text-aligh: justify'> Using the elbow method on the datasets we can see for the first dataset 5 clusters is the optimum amount. As for the IRIS dataset, I think 6 is the optimum number of clusters.</p>
+#### <p style='text-aligh: justify'> The optimum number of clusters is calculated using maximum increment R_t for hierarchical clustering based on Ward distance. </p>
 
-<img src="img/image2.png">
+The results on the first dataset
+```
+Optimum number of clusters for dataset 1 : 4
+Max increment distance: 1668.6530013777597
+```
+The results on the second dataset
+```
+Optimum number of clusters for dataset 2 : 4
+Max increment distance: 29.204787217021345
+```
     
-####    According to the results for the Studet Performance Dataset 4 clusters seems to be the appropriate number. For the Mall Customers dataset, I chose 9 clusters. 
+####    According to the results for the Mall Customers Dataset 4 clusters seems to be the appropriate number. For the Iris dataset, I chose also 4 clusters as per the results. 
 
 #### 3. I have implemented [EM algorithm](./source/em.py) and [DBSCAN algorithm](./source/dbscan.py).
 
-<img src="img/image6.png">
-<img src="img/image7.png">
+<img src="img/image6.png" width='400'>
+<img src="img/image7.png" width='400'>
 
 <img src="img/image8.png">
 <img src="img/image9.png">
@@ -46,28 +62,28 @@
 
 | | Metric |	Implemented Algorithms |	Library Algorithm |
 | - |----- | ----------------------- | ------------------ |
-|1 |	Average Inter-Cluster Distance (Agglomerative) |	56.145836 |	57.496240 |
-| 2 |	Average Inter-Cluster Distance (EM) |	53.640901 |	53.640901 |
-| 3 |	Average Inter-Cluster Distance (DBSCAN) |	53.668599 |	46.091641 |
-| 4 |	Average Intra-Cluster Distance (Agglomerative) |	17.413636 |	19.756912 |
-| 5 |	Average Intra-Cluster Distance (EM) |	28.358630	| 28.358630 |
-| 6 |	Average Intra-Cluster Distance (DBSCAN) |	23.407162 |	46.091641 |
-| 7 |	Clustering Speed (Agglomerative) |	0.091588 |	0.003546 |
-| 8 |	Clustering Speed (EM) |	0.103967 |	0.093742 |
-| 9 |	Clustering Speed (DBSCAN) |	0.001534 |	0.023332 |
+|1 |	Average Inter-Cluster Distance (Agglomerative) |	59.040257 |	58.271701 |
+| 2 |	Average Inter-Cluster Distance (EM) |	52.191699 |	56.166705 |
+| 3 |	Average Inter-Cluster Distance (DBSCAN) |	53.652448 |	46.076062 |
+| 4 |	Average Intra-Cluster Distance (Agglomerative) |	304.787110 |	24.506988 |
+| 5 |	Average Intra-Cluster Distance (EM) |	34.838372	| 26.156562 |
+| 6 |	Average Intra-Cluster Distance (DBSCAN) |	23.393297 |	46.076062 |
+| 7 |	Clustering Speed (Agglomerative) |	3.202118 |	0.002134 |
+| 8 |	Clustering Speed (EM) |	0.037432 |	0.046854 |
+| 9 |	Clustering Speed (DBSCAN) |	0.000707 |	0.0.005861 |
 
 
 ### For IRIS Dataset: 
 
 | | Metric |	Implemented Algorithms |	Library Algorithm |
 | - |----- | ----------------------- | ------------------ |
-|0|	Average Inter-Cluster Distance (Agglomerative)|	2.500110|	2.745475|
+|0|	Average Inter-Cluster Distance (Agglomerative)|	1.531983|	2.745475|
 |1|	Average Inter-Cluster Distance (EM)|	2.740543|	0.586880|
 |2|	Average Inter-Cluster Distance (DBSCAN)|	2.757433|	2.300989|
-|3|	Average Intra-Cluster Distance (Agglomerative)|	1.462248|	0.530974|
+|3|	Average Intra-Cluster Distance (Agglomerative)|	5.510851|	0.530974|
 |4|	Average Intra-Cluster Distance (EM)|	0.511860|	0.586880|
 |5|	Average Intra-Cluster Distance (DBSCAN)|	0.813546|	2.300989|
-|6|	Clustering Speed (Agglomerative)|	0.040753|	0.010765|
+|6|	Clustering Speed (Agglomerative)|	1.897882 |	0.010765|
 |7|	Clustering Speed (EM)|	0.286408|	0.151743|
 |8|	Clustering Speed (DBSCAN)|	0.000641|	0.013844|
 
@@ -80,11 +96,11 @@
 
 <img src="img/image10.png">
 
-#### <p>Average Inter-Cluster Distance: Lower values indicate better separation between clusters.
-#### Conclusion: Implemented hierarchical clustering performs better on both datasets. EM clustering performs almost the same as the library implementation on the first dataset but on the second dataset the library implementation performs a little bit better. My DBSCAN implementation outperforms the library version on the first dataset but performs poorly in the second dataset.
+#### <p> Average Inter-Cluster Distance: Lower values indicate better separation between clusters.
+#### Conclusion: Implemented hierarchical clustering performs better on the second dataset and a little lower on the first. EM clustering performs almost the same as the library implementation on the first dataset but on the second dataset the library implementation performs a little bit better. My DBSCAN implementation performs closer to the library version on the first dataset but performs poorly in the second dataset.
 
 #### Average Intra-Cluster Distance: Lower values indicate that points within the same cluster are closer together.
-#### Conclusion: Both EM algorithms have almost the same average intra-cluster distance, indicating better compactness within clusters. However, the implemented DBSCAN algorithm has a much lower intra-cluster distance compared to the library version on both datasets. Both versions of the hierarchical clustering have more or less the same average intra-cluster distances.
+#### Conclusion: Both EM algorithms have almost the same average intra-cluster distance, indicating better compactness within clusters. However, the implemented DBSCAN algorithm has a much lower intra-cluster distance compared to the library version on both datasets. Implemented hierarchical algorithm perform poorly on both datasets.
 
 #### Clustering Speed: Lower values indicate faster clustering.
 #### Conclusion: Both implemented and library algorithms performed fast but the library algorithms are a little bit faster on almost all datasets.</p>
