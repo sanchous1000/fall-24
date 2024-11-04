@@ -62,10 +62,10 @@ Max increment distance: 29.204787217021345
 
 | | Metric |	Implemented Algorithms |	Library Algorithm |
 | - |----- | ----------------------- | ------------------ |
-|1 |	Average Inter-Cluster Distance (Agglomerative) |	59.040257 |	58.271701 |
+|1 |	Average Inter-Cluster Distance (Agglomerative) |	56.115664 |	58.271701 |
 | 2 |	Average Inter-Cluster Distance (EM) |	52.191699 |	56.166705 |
 | 3 |	Average Inter-Cluster Distance (DBSCAN) |	53.652448 |	46.076062 |
-| 4 |	Average Intra-Cluster Distance (Agglomerative) |	304.787110 |	24.506988 |
+| 4 |	Average Intra-Cluster Distance (Agglomerative) |	136.440442 |	123.414764 |
 | 5 |	Average Intra-Cluster Distance (EM) |	34.838372	| 26.156562 |
 | 6 |	Average Intra-Cluster Distance (DBSCAN) |	23.393297 |	46.076062 |
 | 7 |	Clustering Speed (Agglomerative) |	3.202118 |	0.002134 |
@@ -77,13 +77,13 @@ Max increment distance: 29.204787217021345
 
 | | Metric |	Implemented Algorithms |	Library Algorithm |
 | - |----- | ----------------------- | ------------------ |
-|0|	Average Inter-Cluster Distance (Agglomerative)|	1.531983|	2.745475|
+|0|	Average Inter-Cluster Distance (Agglomerative)|	1.355990|	2.188484|
 |1|	Average Inter-Cluster Distance (EM)|	2.740543|	0.586880|
 |2|	Average Inter-Cluster Distance (DBSCAN)|	2.757433|	2.300989|
-|3|	Average Intra-Cluster Distance (Agglomerative)|	5.510851|	0.530974|
+|3|	Average Intra-Cluster Distance (Agglomerative)|	2.691691|	2.976170|
 |4|	Average Intra-Cluster Distance (EM)|	0.511860|	0.586880|
 |5|	Average Intra-Cluster Distance (DBSCAN)|	0.813546|	2.300989|
-|6|	Clustering Speed (Agglomerative)|	1.897882 |	0.010765|
+|6|	Clustering Speed (Agglomerative)|	2.160613 |	0.002373|
 |7|	Clustering Speed (EM)|	0.286408|	0.151743|
 |8|	Clustering Speed (DBSCAN)|	0.000641|	0.013844|
 
