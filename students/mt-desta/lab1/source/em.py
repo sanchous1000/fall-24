@@ -24,7 +24,7 @@ class my_GaussianMixtureEM:
 
         # EM Iterations
         for iteration in range(self.max_iter):
-            # E-step remains the same
+            # E-step
             responsibilities = np.zeros((self.n_samples, self.n_components))
             for k in range(self.n_components):
                 responsibilities[:, k] = self.weights[k] * multivariate_normal.pdf(X, mean=self.means[k], cov=self.covariances[k])
