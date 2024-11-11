@@ -24,6 +24,7 @@ class KNN:
         for idx, cls in enumerate(classes):
             cls_mask = (labels == cls)
             weighted_votes[:, idx] = np.sum(kernel_weights * cls_mask, axis=1)
+        
         return classes[np.argmax(weighted_votes, axis=1)]
    
 def LOO(X, y, k_neib):
