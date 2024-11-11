@@ -23,7 +23,7 @@
 
 ### 1. Выбор датасета
 
-![Wine Recognition Dataset](https://scikit-learn.org/1.5/datasets/toy_dataset.html#wine-dataset)
+[Wine Recognition Dataset](https://scikit-learn.org/1.5/datasets/toy_dataset.html#wine-dataset)
 
 - 13 признаков
 - 3 класса
@@ -213,7 +213,7 @@ Accuracy: 0.7777777777777778
 
 | k  | My   | Sklearn |
 |----|------|---------|
-| 3  | 0.67 | 0.83    |
+| 1  | 0.72 | 0.77    |
 | 10 | 0.72 | 0.55    |
 | 20 | 0.78 | 0.78    |
 
@@ -221,7 +221,7 @@ Accuracy: 0.7777777777777778
 
 | k  | My    | Sklearn |
 |----|-------|---------|
-| 3  | 0.012 | 0.002   |
+| 1  | 0.030 | 0.002   |
 | 10 | 0.008 | 0.001   |
 | 20 | 0.007 | 0.001   |
 
