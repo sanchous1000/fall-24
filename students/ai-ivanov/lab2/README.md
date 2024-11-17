@@ -166,3 +166,11 @@ class KNN:
 | 100 | ParzenAdaptive | 0.90 | 0.89 | 0.10 |
 
 ![Parzen Adaptive](./assets/parzen_adaptive_results.png)
+
+## Сравнение с реализацией sklearn
+
+| k | sklearn time (s) | custom time (s) | sklearn accuracy | custom accuracy |
+|---|-----------------|-----------------|------------------|-----------------|
+| 3 | 0.019 | 1.598 | 0.865 | 0.865 |
+| 30 | 0.030 | 1.557 | 0.903 | 0.914 |
+| 50 | 0.035 | 1.548 | 0.909 | 0.917 |
