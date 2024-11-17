@@ -4,15 +4,20 @@ from scipy.spatial.distance import cdist
 
 
 class Simple(BaseModel):
-    pass
+    def __str__(self) -> str:
+        return "Simple"
 
 
 class ParzenFixed(BaseModel):
     h: float
 
+    def __str__(self) -> str:
+        return f"ParzenFixed(h={self.h})"
 
-class ParzenNonFixed(BaseModel):
-    h: float
+
+class ParzenAdaptive(BaseModel):
+    def __str__(self) -> str:
+        return "ParzenAdaptive"
 
 
 class KNN:
@@ -20,7 +25,7 @@ class KNN:
         self,
         k: int,
         num_classes: int,
-        mode: Simple | ParzenFixed | ParzenNonFixed,
+        mode: Simple | ParzenFixed | ParzenAdaptive,
     ):
         """
         Initialize KNN classifier
@@ -32,7 +37,7 @@ class KNN:
         """
         self.k: int = k
         self.num_classes: int = num_classes
-        self.mode: Simple | ParzenFixed | ParzenNonFixed = mode
+        self.mode: Simple | ParzenFixed | ParzenAdaptive = mode
         self.X: np.ndarray | None = None
         self.y: np.ndarray | None = None
 
@@ -86,8 +91,8 @@ class KNN:
                 case ParzenFixed(h=h):
                     # Fixed Parzen window: Gaussian kernel with fixed bandwidth
                     topk = 1 / np.sqrt(2 * np.pi) * np.exp(-0.5 * (topk / h) ** 2)
-                case ParzenNonFixed(h=h):
-                    # Non-fixed Parzen window: Gaussian kernel with adaptive bandwidth
+                case ParzenAdaptive():
+                    # Adaptive Parzen window: Gaussian kernel with adaptive bandwidth
                     h = np.sort(d, axis=0)[self.k]  # Use distance to k-th neighbor as bandwidth
                     topk = 1 / np.sqrt(2 * np.pi) * np.exp(-0.5 * (topk / h) ** 2)
 
@@ -106,7 +111,7 @@ class KNN:
         y_pred = np.empty(self.y.shape, dtype=np.int32)
         for i in range(len(self.X)):
             y_pred[i] = (
-                KNN(k=self.k, mode=self.mode)
+                KNN(k=self.k, mode=self.mode, num_classes=self.num_classes)
                 .fit(np.delete(self.X, i, axis=0), np.delete(self.y, i))
                 .predict(self.X[i].reshape((1, -1)))
             )
