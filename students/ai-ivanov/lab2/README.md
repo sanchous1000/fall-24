@@ -17,7 +17,7 @@ https://www.kaggle.com/datasets/jahnavipaliwal/mountains-vs-beaches-preference
 
 ### TSNE & PCA
 
-![TSNE & PCA](./assets/visuals.png)
+![TSNE & PCA](./assets/tsne_pca.png)
 
 Можно заметить, что данные неплохо разделяются в пространстве признаков, хоть и не идеально.
 
