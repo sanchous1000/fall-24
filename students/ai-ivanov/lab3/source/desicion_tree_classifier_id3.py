@@ -20,7 +20,7 @@ class LeafNode(Node):
     class_: int
 
 
-class DecisionTreeID3:
+class DecisionTreeClassifierID3:
     def __init__(
         self,
         criterion: Literal["entropy", "donskoy"] = "entropy",
@@ -228,9 +228,7 @@ class DecisionTreeID3:
 
         self.tree = self._prune_recursive(self.tree, X_test, y_test)
 
-    def _evaluate_accuracy(
-        self, node: Node, X: np.ndarray, y: np.ndarray
-    ) -> float:
+    def _evaluate_accuracy(self, node: Node, X: np.ndarray, y: np.ndarray) -> float:
         """Calculate accuracy for the given node."""
         predictions = []
         for row in X:
@@ -278,9 +276,7 @@ class DecisionTreeID3:
 
         return accuracy_after >= accuracy_before, accuracy_after
 
-    def _prune_recursive(
-        self, node: Node, X: np.ndarray, y: np.ndarray
-    ) -> Node:
+    def _prune_recursive(self, node: Node, X: np.ndarray, y: np.ndarray) -> Node:
         """Recursively prune the tree."""
         match node:
             # Base case: if we're at a leaf, return
@@ -305,7 +301,9 @@ class DecisionTreeID3:
                 if len(X[left_mask]) > 0:
                     node.left = self._prune_recursive(left, X[left_mask], y[left_mask])
                 if len(X[right_mask]) > 0:
-                    node.right = self._prune_recursive(right, X[right_mask], y[right_mask])
+                    node.right = self._prune_recursive(
+                        right, X[right_mask], y[right_mask]
+                    )
 
                 # After pruning children, check if this node should be pruned
                 should_prune, _ = self._should_prune(node, X, y)
