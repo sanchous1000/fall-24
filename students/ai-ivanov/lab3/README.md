@@ -1,29 +1,40 @@
 # Решающее дерево
 
-Решающее дерево — это важный инструмент в машинном обучении, который позволяет принимать решения на основе данных. В процессе создания дерева важно выбрать правильный критерий для разделения вершин. Рассмотрим два критерия: критерий Донского и многоклассовый энтропийный критерий.
+Решающее дерево — это важный инструмент в машинном обучении, который позволяет принимать решения на основе данных. В процессе создания дерева важно выбрать правильный критерий для разделения вершин.
 
 ```python
 def explicit_predict(feature):                                                                                     
-    if feature[1] == 'male':                                                                                       
-        if feature[5] <= 15.5:                                                                                     
-            return 0                                                                                               
+    if feature[3] <= 96.9:                                                                                         
+        if feature[5] <= 86.0:                                                                                     
+            return 1                                                                                               
         else:                                                                                                      
-            if feature[0] <= 1.0:                                                                                  
-                if feature[2] <= 42.0:                                                                             
-                    return 1                                                                                       
-                else:                                                                                              
-                    return 0                                                                                       
+            if feature[7] <= 64.1:                                                                                 
+                return 0                                                                                           
             else:                                                                                                  
-                if feature[2] <= 9.0:                                                                              
-                    if feature[3] <= 1.0:                                                                          
-                        return 1                                                                                   
-                    else:                                                                                          
+                if feature[7] <= 74.3:                                                                             
+                    if feature[3] <= 95.1:                                                                         
                         return 0                                                                                   
+                    else:                                                                                          
+                        return 1                                                                                   
                 else:                                                                                              
                     return 0                                                                                       
     else:                                                                                                          
-        return 1   
+        return 1  
 ```
+
+## Набор данных
+
+https://www.kaggle.com/datasets/abrambeyer/openintro-possum
+
+Набор данных по опоссумам состоит из девяти морфометрических измерений, сделанных на 104 горных щеткохвостых опоссумах, пойманных в семи местах от Южной Виктории до центрального Квинсленда.
+
+| site | Pop | sex | age | hdlngth | skullw | totlngth | taill | footlgth | earconch | eye | chest | belly |
+|------|-----|-----|-----|---------|---------|-----------|--------|-----------|-----------|-----|--------|--------|
+| 1 | Vic | m | 8.0 | 94.1 | 60.4 | 89.0 | 36.0 | 74.5 | 54.5 | 15.2 | 28.0 | 36.0 |
+| 1 | Vic | f | 6.0 | 92.5 | 57.6 | 91.5 | 36.5 | 72.5 | 51.2 | 16.0 | 28.5 | 33.0 |
+| 1 | Vic | f | 6.0 | 94.0 | 60.0 | 95.5 | 39.0 | 75.4 | 51.9 | 15.5 | 30.0 | 34.0 |
+| 1 | Vic | f | 6.0 | 93.2 | 57.1 | 92.0 | 38.0 | 76.1 | 52.2 | 15.2 | 28.0 | 34.0 |
+| 1 | Vic | f | 2.0 | 91.5 | 56.3 | 85.5 | 36.0 | 71.0 | 53.2 | 15.1 | 28.5 | 33.0 |
 
 ## Критерии для разделения вершин
 
@@ -106,7 +117,7 @@ $$
 ### Пример реализации на Python с использованием numpy
 
 ```python
-class DecisionTreeID3:
+class DecisionTreeClassifierID3:
     def __init__(
         self,
         criterion: Literal["entropy", "donskoy"] = "entropy",
@@ -539,116 +550,56 @@ $$
 
 ```python
 def explicit_predict(feature):                                                                                     
-    if feature[1] == 'male':                                                                                       
-        if feature[5] <= 15.5:                                                                                     
-            if feature[2] <= 32.0:                                                                                 
-                if feature[2] <= 12.0:                                                                             
+    if feature[3] <= 96.9:                                                                                         
+        if feature[5] <= 86.0:                                                                                     
+            if feature[9] <= 13.6:                                                                                 
+                if feature[0] <= 2.0:                                                                              
+                    return 0                                                                                       
+                else:                                                                                              
                     return 1                                                                                       
-                else:                                                                                              
-                    if feature[2] <= 26.0:                                                                         
-                        return 0                                                                                   
-                    else:                                                                                          
-                        return 0                                                                                   
             else:                                                                                                  
-                if feature[5] <= 7.8958:                                                                           
-                    if feature[2] <= 74.0:                                                                         
-                        return 0                                                                                   
-                    else:                                                                                          
-                        return 0                                                                                   
+                if feature[7] <= 61.5:                                                                             
+                    return 0                                                                                       
                 else:                                                                                              
-                    if feature[0] <= 2.0:                                                                          
-                        return 0                                                                                   
+                    if feature[8] <= 43.9:                                                                         
+                        return 1                                                                                   
                     else:                                                                                          
-                        return 0                                                                                   
+                        return 1                                                                                   
         else:                                                                                                      
-            if feature[0] <= 1.0:                                                                                  
-                if feature[2] <= 42.0:                                                                             
-                    if feature[2] <= 31.0:                                                                         
-                        return 0                                                                                   
-                    else:                                                                                          
-                        return 1                                                                                   
-                else:                                                                                              
-                    if feature[5] <= 35.5:                                                                         
-                        return 0                                                                                   
-                    else:                                                                                          
-                        return 0                                                                                   
+            if feature[7] <= 64.1:                                                                                 
+                return 0                                                                                           
             else:                                                                                                  
-                if feature[2] <= 9.0:                                                                              
-                    if feature[3] <= 1.0:                                                                          
-                        return 1                                                                                   
-                    else:                                                                                          
-                        return 0                                                                                   
-                else:                                                                                              
-                    if feature[5] <= 46.9:                                                                         
-                        return 0                                                                                   
-                    else:                                                                                          
-                        return 0                                                                                   
-    else:                                                                                                          
-        if feature[0] <= 3.0:                                                                                      
-            if feature[5] <= 23.25:                                                                                
-                if feature[6] == 'S':                                                                              
-                    if feature[5] <= 10.5167:                                                                      
-                        return 0                                                                                   
-                    else:                                                                                          
-                        return 1                                                                                   
-                else:                                                                                              
-                    if feature[5] <= 15.2458:                                                                      
-                        return 1                                                                                   
-                    else:                                                                                          
-                        return 1                                                                                   
-            else:                                                                                                  
-                if feature[2] <= 5.0:                                                                              
-                    if feature[2] <= 2.0:                                                                          
+                if feature[7] <= 74.3:                                                                             
+                    if feature[3] <= 95.1:                                                                         
                         return 0                                                                                   
                     else:                                                                                          
                         return 1                                                                                   
                 else:                                                                                              
                     return 0                                                                                       
-        else:                                                                                                      
-            if feature[2] <= 27.0:                                                                                 
-                if feature[2] <= 23.0:                                                                             
-                    if feature[2] <= 2.0:                                                                          
-                        return 0                                                                                   
-                    else:                                                                                          
-                        return 1                                                                                   
-                else:                                                                                              
-                    if feature[2] <= 24.0:                                                                         
-                        return 1                                                                                   
-                    else:                                                                                          
-                        return 1                                                                                   
-            else:                                                                                                  
-                if feature[6] == 'C':                                                                              
-                    if feature[5] <= 28.7125:                                                                      
-                        return 1                                                                                   
-                    else:                                                                                          
-                        return 1                                                                                   
-                else:                                                                                              
-                    return 1  
+    else:                                                                                                          
+        return 1  
 ```
 
 #### Дерево после редукции
 
 ```python
 def explicit_predict(feature):                                                                                     
-    if feature[1] == 'male':                                                                                       
-        if feature[5] <= 15.5:                                                                                     
-            return 0                                                                                               
+    if feature[3] <= 96.9:                                                                                         
+        if feature[5] <= 86.0:                                                                                     
+            return 1                                                                                               
         else:                                                                                                      
-            if feature[0] <= 1.0:                                                                                  
-                if feature[2] <= 42.0:                                                                             
-                    return 1                                                                                       
-                else:                                                                                              
-                    return 0                                                                                       
+            if feature[7] <= 64.1:                                                                                 
+                return 0                                                                                           
             else:                                                                                                  
-                if feature[2] <= 9.0:                                                                              
-                    if feature[3] <= 1.0:                                                                          
-                        return 1                                                                                   
-                    else:                                                                                          
+                if feature[7] <= 74.3:                                                                             
+                    if feature[3] <= 95.1:                                                                         
                         return 0                                                                                   
+                    else:                                                                                          
+                        return 1                                                                                   
                 else:                                                                                              
                     return 0                                                                                       
     else:                                                                                                          
-        return 1
+        return 1 
 ```
 
 
@@ -656,19 +607,20 @@ def explicit_predict(feature):
 
 |Metric|Before Pruning|After Pruning|
 |------|--------------|-------------|
-|Accuracy|0.6480|0.6480|
-|Precision|0.6533|0.6533|
-|Recall|0.6480|0.6480|
-|F1|0.6094|0.6094|
+|Accuracy|0.7143|0.7143|
+|Precision|0.7143|0.7143|
+|Recall|0.7143|0.7143|
+|F1|0.7143|0.7143|
 
 ### Сравнение с sklearn
 
-|Metric|Custom|sklearn|
+||Custom|sklearn|
 |------|--------------|-------------|
-|Accuracy|0.6480|0.7933|
-|Precision|0.6533|0.7977|
-|Recall|0.6480|0.7933|
-|F1|0.6094|0.7876|
+|Accuracy|0.7143|0.6190|
+|Precision|0.7143|0.6190|
+|Recall|0.7143|0.6190|
+|F1|0.7143|0.6190|
+|Time|62.8 ms|1.01 ms|
 
 ## Решение задачи регрессии через деревья
 
@@ -694,64 +646,16 @@ def explicit_predict(feature):
 ### Алгоритм построения регрессионного дерева
 
 1. **Выбор лучшего разбиения**
-   ```python
-   def find_best_split(X, y):
-       best_score = float('inf')
-       for feature in features:
-           for threshold in possible_thresholds:
-               left_mask = X[:, feature] <= threshold
-               mse_left = np.mean((y[left_mask] - np.mean(y[left_mask]))**2)
-               mse_right = np.mean((y[~left_mask] - np.mean(y[~left_mask]))**2)
-               total_mse = (mse_left * sum(left_mask) + 
-                          mse_right * sum(~left_mask)) / len(y)
-               if total_mse < best_score:
-                   best_score = total_mse
-                   best_split = (feature, threshold)
-   ```
+   - Для каждого признака и порогового значения вычисляем MSE
+   - Выбираем пороговое значение, которое минимизирует MSE
 
 2. **Создание листа**
-   ```python
-   def create_leaf(y):
-       return np.mean(y)  # Среднее значение в листе
-   ```
+   - В листьях сохраняем среднее значение всех примеров, попавших в этот лист
 
 3. **Рекурсивное построение**
    - Разбиваем данные по лучшему признаку
    - Рекурсивно строим левое и правое поддерево
    - В листьях сохраняем средние значения
-
-### Особенности реализации
-
-1. **Структура узла**
-   ```python
-   class Node:
-       def __init__(self):
-           self.feature = None
-           self.threshold = None
-           self.value = None  # Для листьев - среднее значение
-           self.left = None
-           self.right = None
-   ```
-
-2. **Предсказание**
-   ```python
-   def predict(self, X):
-       predictions = []
-       for x in X:
-           node = self.tree
-           while node.left:  # Пока не дошли до листа
-               if x[node.feature] <= node.threshold:
-                   node = node.left
-               else:
-                   node = node.right
-           predictions.append(node.value)
-       return np.array(predictions)
-   ```
-
-3. **Регуляризация**
-   - Ограничение глубины дерева
-   - Минимальное число примеров в листе
-   - Минимальное улучшение MSE для разбиения
 
 ### Преимущества и недостатки
 
@@ -765,3 +669,200 @@ def explicit_predict(feature):
 - Склонность к переобучению
 - Нестабильность (малые изменения в данных могут сильно менять структуру)
 - Ступенчатая функция предсказания
+
+### Пример реализации на python
+
+```python
+class DecisionTreeRegressorID3:
+    def __init__(
+        self,
+        min_samples_split: int = 2,
+        max_depth: int = 5,
+    ):
+        """
+        Initialize ID3 decision tree regressor
+
+        Parameters:
+        -----------
+        min_samples_split : int, default=2
+            The minimum number of samples required to split an internal node
+        max_depth : int, default=5
+            The maximum depth of the tree
+        """
+        self.min_samples_split = min_samples_split
+        self.max_depth = max_depth
+        self.tree = None
+
+    def fit(
+        self,
+        X: np.ndarray,
+        y: np.ndarray,
+        feature_types: list[Literal["categorical", "numeric"]],
+    ):
+        """
+        Build a decision tree regressor from the training set (X, y).
+
+        Parameters:
+        -----------
+        X : np.ndarray of shape (n_samples, n_features)
+            The training input samples.
+        y : np.ndarray of shape (n_samples,)
+            The target values.
+        feature_types : list[Literal["categorical", "numeric"]]
+            The types of features.
+        """
+        self.tree = self._build_tree(X, y, feature_types)
+
+    def _build_tree(
+        self,
+        X: np.ndarray,
+        y: np.ndarray,
+        feature_types: list[Literal["categorical", "numeric"]],
+        depth: int = 0,
+    ) -> Node:
+        n_samples, _ = X.shape
+
+        # Base cases
+        if depth >= self.max_depth or n_samples < self.min_samples_split:
+            return LeafNode(value=np.mean(y))
+
+        # Find the best split
+        best_feature, best_threshold = self._find_best_split(X, y, feature_types)
+
+        # If no good split is found, return leaf
+        if best_feature is None:
+            return LeafNode(value=np.mean(y, where=~np.isnan(y)))
+
+        # Split the data
+        match best_threshold:
+            case float():
+                left_mask = X[:, best_feature] <= best_threshold
+                right_mask = ~left_mask
+            case _:
+                left_mask = X[:, best_feature] == best_threshold
+                right_mask = ~left_mask
+
+        # Recursively build the left and right subtrees
+        left_subtree = self._build_tree(
+            X[left_mask], y[left_mask], feature_types, depth + 1
+        )
+        right_subtree = self._build_tree(
+            X[right_mask], y[right_mask], feature_types, depth + 1
+        )
+
+        return ParentNode(
+            feature=best_feature,
+            threshold=best_threshold,
+            left=left_subtree,
+            right=right_subtree,
+        )
+
+    def _find_best_split(
+        self,
+        X: np.ndarray,
+        y: np.ndarray,
+        feature_types: list[Literal["categorical", "numeric"]],
+    ) -> tuple[int | None, float | str | None]:
+        _, n_features = X.shape
+        best_mse = np.inf
+        best_feature = None
+        best_threshold = None
+
+        current_mse = np.mean((y - np.mean(y, where=~np.isnan(y))) ** 2, where=~np.isnan(y))
+
+        for feature in range(n_features):
+            if feature_types[feature] == "categorical":
+                unique_values = list(set(X[:, feature]))
+                for category in unique_values:
+                    mse = self._calculate_mse(X[:, feature], y, category)
+                    if mse < best_mse:
+                        best_mse = mse
+                        best_feature = feature
+                        best_threshold = category
+            else:
+                # Sort unique values for numeric features
+                unique_values = np.sort(np.unique(X[:, feature]))
+                for threshold in unique_values:
+                    if np.isnan(threshold):
+                        continue
+                    mse = self._calculate_mse(X[:, feature], y, threshold)
+                    if mse < best_mse:
+                        best_mse = mse
+                        best_feature = feature
+                        best_threshold = threshold
+        # If no split improves MSE, return None
+        if best_mse >= current_mse:
+            return None, None
+
+        return best_feature, best_threshold
+
+    def _calculate_mse(
+        self,
+        X_column: np.ndarray,
+        y: np.ndarray,
+        threshold: float | Any,
+    ) -> float:
+        # Split the data based on threshold
+        match threshold:
+            case float() if np.isnan(threshold):
+                return np.inf
+            case float():
+                left_mask = X_column <= threshold
+                right_mask = ~left_mask
+            case _:
+                left_mask = X_column == threshold
+                right_mask = ~left_mask
+
+        # Get the child node samples
+        left_y = y[left_mask]
+        right_y = y[right_mask]
+
+        # If split creates empty node or single-element node, return infinity
+        if len(left_y) <= 0 or len(right_y) <= 0:
+            return np.inf
+
+        # Calculate MSE for both splits
+        left_mean = np.mean(left_y, where=~np.isnan(left_y))
+        right_mean = np.mean(right_y, where=~np.isnan(right_y))
+
+        # Handle potential division by zero or nan values
+        mse_left = np.mean((left_y - left_mean) ** 2, where=~np.isnan(left_y))
+        mse_right = np.mean((right_y - right_mean) ** 2, where=~np.isnan(right_y))
+
+        # Calculate weighted average MSE
+        n_left = len(left_y)
+        n_right = len(right_y)
+        n_total = n_left + n_right
+
+        weighted_mse = (n_left * mse_left + n_right * mse_right) / n_total
+        return weighted_mse
+
+    def predict(self, X: np.ndarray) -> np.ndarray:
+        """Predict values for X."""
+        return np.array([self._predict_row(row) for row in X])
+
+    def _predict_row(self, row: np.ndarray) -> float:
+        """Predict value for a single row."""
+        node = self.tree
+        while True:
+            match node:
+                case LeafNode(value=value):
+                    return value
+                case ParentNode(
+                    feature=feature, threshold=threshold, left=left, right=right
+                ):
+                    if row[feature] <= threshold:
+                        node = left
+                    else:
+                        node = right
+
+```
+
+### Сравнение с sklearn
+
+||Custom|sklearn|
+|------|--------------|-------------|
+|MSE|6.7308|7.0552|
+|MAE|1.9895|2.0559|
+|R2|0.6155|0.5811|
+|Time|62.6 ms|533 μs|
