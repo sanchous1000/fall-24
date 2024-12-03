@@ -50,28 +50,6 @@ class MyAgglomerative:
                 res[val] = i
         return res
 
-    def mean_intracluster_distance(self, x: pd.DataFrame, labels):
-        X = x.to_numpy()
-        d = self._labels_to_dict(X, labels)
-        sum_dist = 0
-        n_pairs = 0
-        for points in d.values():
-            for i in range(len(points)):
-                for j in range(i + 1, len(points)):
-                    sum_dist += self._get_dist(points[i], points[j])
-                    n_pairs += 1
-
-        return sum_dist / n_pairs
-
-
-    def _labels_to_dict(self, X: np.ndarray, labels):
-        d = {}
-        for i, label in enumerate(labels):
-            if label not in d:
-                d[label] = []
-            d[label].append(X[i])
-        return d
-
     def _get_dist(self, x, y, l1, l2):
         if self.metric == 'euclidean':
             return np.linalg.norm(x - y)

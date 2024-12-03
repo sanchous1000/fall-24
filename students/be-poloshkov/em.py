@@ -1,5 +1,6 @@
+import random
+
 import numpy as np
-from scipy.stats import multivariate_normal
 
 
 class MyEM:
@@ -11,45 +12,53 @@ class MyEM:
         self.si = None
         self.weights = None
 
-    def fit_predict(self, X):
-        X = X.values
-        n_samples, n_features = X.shape
+    def fit_predict(self, data):
+        data = data.to_numpy()
 
-        self.means = X[np.random.choice(n_samples, self.n_clusters, replace=False)]
-        self.si = [np.cov(X.T) for _ in range(self.n_clusters)]
-        self.weights = np.ones(self.n_clusters) / self.n_clusters
-        probabilities = np.zeros((n_samples, self.n_clusters))
+        num_clusters = self.n_clusters
+        num_features = data.shape[1]
+        num_objects = len(data)
 
-        for iteration in range(self.max_iter):
-            for k in range(self.n_clusters):
-                probabilities[:, k] = self.weights[k] * multivariate_normal.pdf(
-                    X,
-                    mean=self.means[k],
-                    cov=self.si[k],
-                    allow_singular=True,
-                )
+        centers = np.array([random.choice(data) for _ in range(num_clusters)])
+        sigmas = np.empty((num_clusters, num_features))
 
-            probabilities /= probabilities.sum(axis=1, keepdims=True)
+        for k in range(num_clusters):
+            diff = data - centers[k]
+            sigmas[k] = np.diag(np.dot(diff.T, diff)) / num_objects
 
-            N_k = probabilities.sum(axis=0)
+        weights = 1 / num_clusters * np.ones((num_clusters, 1))
 
-            new_means = np.dot(probabilities.T, X) / N_k[:, np.newaxis]
-            new_covariances = []
+        y_prev = None
+        for _ in range(self.max_iter):
+            probs = []
+            for i in range(num_clusters):
+                ro_sq = np.sum((data[:, :] - centers[i]) ** 2 / sigmas[i], axis=1)
+                probs += [
+                    np.power((2 * np.pi), -num_features / 2)
+                    / np.prod(np.sqrt(sigmas[i]))
+                    * np.exp(-ro_sq / 2)
+                ]
+            probs = np.array(probs, dtype=np.float32).T
 
-            for k in range(self.n_clusters):
-                if N_k[k] == 0:
-                    new_covariances.append(np.eye(n_features))
-                else:
-                    diff = X - new_means[k]
-                    new_covariances.append(np.dot(probabilities[:, k] * diff.T, diff) / N_k[k])
+            g = weights.T * probs
+            g /= g.sum(axis=1)[:, np.newaxis]
 
-            new_weights = N_k / n_samples
+            weights = 1 / num_objects * np.sum(g, axis=0)
 
-            if (np.abs(new_weights - self.weights) < self.weight_threshold).all():
-                break
+            centers = (
+                    g.T @ data / weights[:, np.newaxis] / num_objects
+            )
 
-            self.means = new_means
-            self.si = new_covariances
-            self.weights = new_weights
+            sigmas = np.empty((num_clusters, num_features))
+            for k in range(num_clusters):
+                sigmas[k] = g[:, k] @ (data - centers[k]) ** 2
+            sigmas /= weights[:, np.newaxis]
+            sigmas /= num_objects
 
-        return np.argmax(probabilities, axis=1)
+            y = np.argmax(g, axis=1)
+
+            if y_prev is not None and np.array_equal(y, y_prev):
+                return y
+
+            y_prev = y
+        return y

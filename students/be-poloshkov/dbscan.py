@@ -1,6 +1,7 @@
 from collections import deque
 
 import numpy as np
+import pandas as pd
 
 
 class MyDBSCAN:
@@ -12,71 +13,64 @@ class MyDBSCAN:
     def __repr__(self) -> str:
         return f'MyDBSCAN class: eps={self.eps}, min_samples={self.min_samples}'
 
-    def fit_predict(self, X):
-        X = np.array(X)
-        observations, feature_count = X.shape
-        roots = {}
-        border = set()
-        outliers = set()
+    def pairwise_distances(self, X):
+        n = len(X)
+        distances = np.zeros((n, n))
+        for i in range(n):
+            for j in range(i + 1, n):
+                distances[i][j] = distances[j][i] = self._get_dist(
+                    X.iloc[i].values,
+                    X.iloc[j].values,
+                )
+        return distances
 
-        core_to_cluster = {}
+    def find_neighbours(self, point_idx: int, distances: np.ndarray):
+        return [
+            nb_idx
+            for nb_idx, distance in enumerate(distances[point_idx])
+            if nb_idx != point_idx and distance < self.eps
+        ]
 
-        neighbours = self._get_neighbours(X)
-        for i in range(observations):
-            if i in outliers or i in border:
+    def fit_predict(self, X: pd.DataFrame):
+        n = len(X)
+        clusters = [0] * n
+        cluster_id = 1
+
+        distances = self.pairwise_distances(X)
+
+        for i in range(n):
+            if clusters[i] != 0:
                 continue
 
-            if len(neighbours[i]) < self.min_samples:
-                outliers.add(i)
+            if self.expand_cluster(distances, clusters, i, cluster_id):
+                cluster_id += 1
+
+        self.labels_ = clusters
+        return self.labels_
+
+    def expand_cluster(self, distances, clusters, i, cluster_id):
+        neighbours = self.find_neighbours(i, distances)
+        if len(neighbours) < self.min_samples:
+            clusters[i] = -1
+            return False
+
+        clusters[i] = cluster_id
+        for j in neighbours:
+            clusters[j] = cluster_id
+
+        neighbours = deque(neighbours)
+        while neighbours:
+            j_nbs = self.find_neighbours(neighbours.pop(), distances)
+            if len(j_nbs) < self.min_samples:
                 continue
 
-            if i not in core_to_cluster:
-                core_to_cluster[i] = i
+            for k in j_nbs:
+                if clusters[k] < 1:
+                    if clusters[k] == 0:
+                        neighbours.append(k)
+                    clusters[k] = cluster_id
 
-            cluster = core_to_cluster[i]
-
-            if cluster not in roots:
-                roots[cluster] = set()
-
-            traversal_list = deque(neighbours[i])
-            seen = set()
-            while traversal_list:
-                neighbour = traversal_list.popleft()
-                if neighbour in seen:
-                    continue
-                seen.add(neighbour)
-                if len(neighbours[neighbour]) < self.min_samples:
-                    border.add(neighbour)
-                else:
-                    core_to_cluster[neighbour] = cluster
-                    traversal_list.extend(neighbours[neighbour])
-                roots[cluster].add(neighbour)
-
-
-        res = [0] * observations
-
-        # outliers go to cluster -1
-        for ol in outliers:
-            res[ol] = -1
-
-        for cluster_root, points in roots.items():
-            for point in points:
-                res[point] = cluster_root
-
-        return res
-
-    def _get_neighbours(self, X):
-        neighbours = [set() for _ in range(X.shape[0])]
-        for i in range(X.shape[0]):
-            for j in range(X.shape[0]):
-                if i == j:
-                    continue
-
-                dist = self._get_dist(X[i], X[j])
-                if dist < self.eps:
-                    neighbours[i].add(j)
-
-        return neighbours
+        return True
 
     def _get_dist(self, x, y):
         if self.metric == 'euclidean':
