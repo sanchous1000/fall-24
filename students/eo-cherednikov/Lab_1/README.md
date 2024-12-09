@@ -44,6 +44,10 @@
 
 <img title='Сравнение и метрики' src='img/stats_EM-algorithm_Mall.png' width=400>
 
+<img title="Дополнительное сравнение при TSNE" src="img/additional_em_Mall_native.png">
+
+<img title="Дополнительное сравнение при TSNE" src="img/additional_em_Mall_sklearn.png">
+
 # DBSCAN
 ### Iris
 <img title="DBSCAN: Iris" src="img/dbscan_Iris.png" width=600>
