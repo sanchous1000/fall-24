@@ -4,7 +4,7 @@
 ### Датасет 1: Wine
 
 [Ссылка на датасет](https://www.kaggle.com/datasets/harrywang/wine-dataset-for-clustering)
-![wine_data.png](.images/wine_data.png)
+![wine_data.png](./images/wine_data.png)
 
 Кластеры соединены перемычками, число кластеров предположительно равно 3.
 
