@@ -4,12 +4,14 @@
 ### Датасет 1: Wine
 
 [Ссылка на датасет](https://www.kaggle.com/datasets/harrywang/wine-dataset-for-clustering)
+
 ![wine_data.png](./images/wine_data.png)
 
 Кластеры соединены перемычками, число кластеров предположительно равно 3.
 
 ### Датасет 2: Skyrim Weapons 
 [Ссылка на датасет](https://www.kaggle.com/datasets/elmartini/skyrim-weapons-dataset)
+
 ![weapons_data.png](./images/wine_data.png)
 
 Предположительно 3 кластера ленточного типа.
