@@ -12,7 +12,7 @@
 ### Датасет 2: Skyrim Weapons 
 [Ссылка на датасет](https://www.kaggle.com/datasets/elmartini/skyrim-weapons-dataset)
 
-![weapons_data.png](./images/wine_data.png)
+![weapons_data.png](./images/weapons_data.png)
 
 Предположительно 3 кластера ленточного типа.
 
