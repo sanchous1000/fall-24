@@ -1,5 +1,6 @@
 # Лабораторная работа №2
-
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1Fvdm3hCCiAIhk22kvZaAnZjS_L6L3RjZ?usp=sharing)
+<br>
 Ссылка на датасет https://www.kaggle.com/datasets/saramah/diabets-data-set - задача предсказания диабета, бинарная классификация.
 
 ## Визуализация данных
