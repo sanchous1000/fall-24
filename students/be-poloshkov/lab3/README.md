@@ -47,14 +47,16 @@
 
 #### Классификация
 
-| Реализация                          | Accuracy | F1 (not survived) | Время работы, с |
-|-------------------------------------|----------|-------------------|-----------------|
-| SELF-WRITTEN, NO REDUCTION: GINI    | 0.70     | 0.75              | 0.103           |
-| SELF-WRITTEN, NO REDUCTION: DONSKOY | 0.61     | 0.65              | 0.047           |
-| SELF-WRITTEN, REDUCTION: GINI       | 0.75     | 0.83              | 0.034           |
-| SELF-WRITTEN, REDUCTION: DONSKOY    | 0.76     | 0.83              | 0.022           |
-| SK, NO REDUCTION: GINI              | 0.73     | 0.78              | 0.004           |
-| SK, REDUCTION: GINI                 | 0.74     | 0.81              | 0.003           |
+| Реализация                            | Accuracy | F1 (not survived) | Время работы, с |
+|---------------------------------------|----------|-------------------|-----------------|
+| SELF-WRITTEN, NO REDUCTION: GINI      | 0.70     | 0.75              | 0.103           |
+| SELF-WRITTEN, NO REDUCTION: DONSKOY   | 0.61     | 0.65              | 0.047           |
+| SELF-WRITTEN, PRE-REDUCTION: GINI     | 0.75     | 0.83              | 0.034           |
+| SELF-WRITTEN, PRE-REDUCTION: DONSKOY  | 0.76     | 0.83              | 0.022           |
+| SELF-WRITTEN, POST-REDUCTION: GINI    | 0.72     | 0.77              | 0.865           |
+| SELF-WRITTEN, POST-REDUCTION: DONSKOY | 0.64     | 0.68              | 0.005           |
+| SK, NO REDUCTION: GINI                | 0.73     | 0.78              | 0.004           |
+| SK, REDUCTION: GINI                   | 0.74     | 0.81              | 0.003           |
 
 #### Регрессия
 

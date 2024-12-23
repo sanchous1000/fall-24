@@ -1,8 +1,9 @@
 from collections import Counter
-from typing import Tuple, Callable
+from typing import Tuple
 
 import numpy as np
 import pandas as pd
+
 
 class Node:
     def __init__(self, leaf: bool, column: str = None, value: float = None,
@@ -32,6 +33,30 @@ class Node:
             return self.right.traverse(row)
         return self.left.traverse(row)
 
+    def post_prune(self, X: pd.DataFrame, y: pd.Series):
+        if self.leaf:
+            return
+
+        self.left.post_prune(X, y)
+        self.right.post_prune(X, y)
+
+        errors = {'left': 0, 'right': 0, 'self': 0}
+        for i, row in X.iterrows():
+            errors['left'] += self.left.traverse(row) != y.loc[i]
+            errors['right'] += self.right.traverse(row) != y.loc[i]
+            errors['self'] += self.traverse(row) != y.loc[i]
+
+        minkey = min(errors, key=errors.get)
+        if minkey == 'self':
+            return
+
+        replacement = self.left if minkey == 'left' else self.right
+        self.value = replacement.value
+        self.column = replacement.column
+        self.left = replacement.left
+        self.right = replacement.right
+        self.leaf = replacement.leaf
+
 class DecisionTree:
     def __init__(self, max_depth, min_samples_split, max_leafs, criterion = 'gini'):
         self.max_depth = max_depth
@@ -40,7 +65,12 @@ class DecisionTree:
         self.leafs_cnt = 0
         self.root = None
         self.criterion = criterion
-        self.criterion_func = {'entropy': self._calc_entropy, 'gini': self._calc_gini, 'mse': self._calc_mse}.get(self.criterion)
+        self.criterion_func = {
+            'entropy': self._calc_entropy,
+            'gini': self._calc_gini,
+            'mse': self._calc_mse,
+            'donskoy': lambda _: -1 # donskoy is handled with _calc_donskoy function
+        }.get(self.criterion)
 
     def fit(self, X: pd.DataFrame, y: pd.Series):
         mask = ~np.any(np.isnan(X), axis=1)
@@ -48,10 +78,13 @@ class DecisionTree:
         self.targets = y.index
         self.root = self._build_tree(X, y, 0, 0, 0)
     def predict(self, X: pd.DataFrame):
-        y = []
-        for _, x in X.iterrows():
-            y.append(self.root.traverse(x))
-        return y
+        y = {}
+        for i, x in X.iterrows():
+            y[i] = self.root.traverse(x)
+        return pd.Series(y)
+    def prune(self, X: pd.DataFrame, y: pd.Series):
+        self.root.post_prune(X, y, 0)
+
     def print_tree(self):
         self.root.print_tree()
     def _build_tree(self, X: pd.DataFrame, y: pd.Series, depth: int, left: int, right: int) -> Node:
@@ -61,7 +94,6 @@ class DecisionTree:
 
         bs_name, bs_val, bs_ig = self._get_best_split(X, y)
         if bs_name is None:
-            first_class = y.min()
             self.leafs_cnt += 1
             return Node(leaf=True, value=self._get_leaf_value(y))
 
@@ -145,6 +177,10 @@ class DecisionTree:
         r_len = len(right)
         return sum(cnt * (r_len - r_cnt.get(v, 0)) for v, cnt in l_cnt.items())
 
+    def _calc_mse(self, arr: np.array):
+        ym = np.mean(arr)
+        return np.mean((arr - ym) ** 2)
+
 
 class DecisionTreeRegressor(DecisionTree):
     def __init__(self, max_depth, min_samples_split, max_leafs):
@@ -156,7 +192,3 @@ class DecisionTreeRegressor(DecisionTree):
 
     def get_leaf_value(self, values):
         return np.mean(values)
-
-    def _calc_mse(self, arr: np.array):
-        ym = np.mean(arr)
-        return np.mean((arr - ym) ** 2)

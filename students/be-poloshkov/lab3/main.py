@@ -18,9 +18,13 @@ def test_regressor(instance):
 	print(mse(reg_y_test, y_pred))
 	plot_regression(y_pred, reg_y_test)
 
-def test_classifier(instance):
+def test_classifier(instance, post_prune: bool):
 	instance.fit(clf_X_train, clf_y_train)
+	if post_prune:
+		instance.post_prune(clf_X_test, clf_y_test)
+		instance.print_tree()
 	y_pred = instance.predict(clf_X_test)
+	print(set(clf_y_test) - set(y_pred))
 	print('Classification Report')
 	print(classification_report(clf_y_test, y_pred))
 
@@ -66,27 +70,39 @@ if __name__ == '__main__':
 
 	classifiers = (
 		('Self-written, no reduction: gini',
-		 DecisionTree(max_depth=inf, max_leafs=inf, min_samples_split=0)),
+		 DecisionTree(max_depth=inf, max_leafs=inf, min_samples_split=0),
+		 False),
 
 		('Self-written, no reduction: donskoy',
-		 DecisionTree(max_depth=inf, max_leafs=inf, min_samples_split=0, criterion='donskoy')),
+		 DecisionTree(max_depth=inf, max_leafs=inf, min_samples_split=0, criterion='donskoy'),
+		 False),
 
-		('Self-written, reduction: gini',
-		 DecisionTree(max_depth=max_depth, max_leafs=max_leafs, min_samples_split=0)),
+		('Self-written, pre-reduction: gini',
+		 DecisionTree(max_depth=max_depth, max_leafs=max_leafs, min_samples_split=0),
+		 False),
 
-		('Self-written, reduction: donskoy',
-		 DecisionTree(max_depth=max_depth, max_leafs=max_leafs, min_samples_split=0, criterion='donskoy')),
+		('Self-written, pre-reduction: donskoy',
+		 DecisionTree(max_depth=max_depth, max_leafs=max_leafs, min_samples_split=0, criterion='donskoy'),
+		 False),
 
-		('SK, no reduction: gini', SKDecisionTreeClassifier()),
+		('Self-written, post-reduction: gini',
+		 DecisionTree(max_depth=inf, max_leafs=inf, min_samples_split=0),
+		 True),
+
+		('Self-written, post-reduction: donskoy',
+		 DecisionTree(max_depth=inf, max_leafs=inf, min_samples_split=0, criterion='donskoy'),
+		 True),
+
+		('SK, no reduction: gini', SKDecisionTreeClassifier(), False),
 
 		('SK, reduction: gini',
-		 SKDecisionTreeClassifier(max_depth=max_depth, max_leaf_nodes=max_leafs))
+		 SKDecisionTreeClassifier(max_depth=max_depth, max_leaf_nodes=max_leafs), False)
 	)
 
-	for label, clf in classifiers:
+	for label, clf, post_prune in classifiers:
 		print(f'\t{label.upper()}')
 		start = time.monotonic()
-		test_classifier(clf)
+		test_classifier(clf, post_prune)
 		print('Time', time.monotonic() - start)
 
 	# Regression
