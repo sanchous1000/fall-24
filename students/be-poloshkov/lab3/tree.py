@@ -7,12 +7,13 @@ import pandas as pd
 
 class Node:
     def __init__(self, leaf: bool, column: str = None, value: float = None,
-                 left: 'Node' = None, right: 'Node' = None):
+                 left: 'Node' = None, right: 'Node' = None, left_prob: float = 0):
         self.leaf = leaf
         self.left = left
         self.right = right
         self.value = value
         self.column = column
+        self.left_prob = left_prob
 
     def print_tree(self):
         return self._print(0)
@@ -29,6 +30,11 @@ class Node:
     def traverse(self, row: pd.Series):
         if self.leaf:
             return self.value
+        # Process nan values
+        if np.isnan(row[self.column]):
+                left_proba = self.left.traverse(row)
+                right_proba = self.right.traverse(row)
+                return self.left_prob * left_proba + (1 - self.left_prob) * right_proba
         if row[self.column] > self.value:
             return self.right.traverse(row)
         return self.left.traverse(row)
@@ -56,6 +62,7 @@ class Node:
         self.left = replacement.left
         self.right = replacement.right
         self.leaf = replacement.leaf
+        self.left_prob = replacement.left_prob
 
 class DecisionTree:
     def __init__(self, max_depth, min_samples_split, max_leafs, criterion = 'gini'):
@@ -100,6 +107,7 @@ class DecisionTree:
         left_x, left_y = X[X[bs_name] <= bs_val], y[X[bs_name] <= bs_val]
         right_x, right_y = X[X[bs_name] > bs_val], y[X[bs_name] > bs_val]
 
+        total = len(left_x) + len(right_x)
         left_tree = self._build_tree(left_x, left_y, depth + 1, left + 1, right)
         right_tree = self._build_tree(right_x, right_y, depth + 1, left, right + 1)
         return Node(leaf=False,
@@ -107,6 +115,7 @@ class DecisionTree:
                     value=bs_val,
                     left=left_tree,
                     right=right_tree,
+                    left_prob=(len(left_x) / total),
                     )
     def _get_leaf_value(self, values):
         vals, counts = np.unique(values, return_counts=True)
