@@ -6,6 +6,7 @@ import pandas as pd
 from scipy.cluster.hierarchy import dendrogram
 from scipy.spatial.distance import sqeuclidean
 from sklearn.cluster import AgglomerativeClustering, DBSCAN
+from sklearn.manifold import TSNE
 from sklearn.mixture import GaussianMixture
 from sklearn.preprocessing import LabelEncoder
 
@@ -83,20 +84,18 @@ def make_linkage(model):
     return linkage_matrix
 
 def plot_countries(title, labels, df):
-    copy = df.copy()
-    copy['cluster'] = labels
-    plt.scatter(copy['longitude'], copy['latitude'], c=copy['cluster'], cmap='rainbow')
+    df['cluster'] = labels
+    plt.scatter(df['longitude'], df['latitude'], c=df['cluster'], cmap='rainbow')
     plt.xlim(-180, 180)
     plt.ylim(-90, 90)
     plt.title(title)
     plt.show()
 
 def plot_wine(title, labels, df):
-    copy = df.copy()
-    copy['cluster'] = labels
-    plt.scatter(copy['Flavanoids'], copy['Hue'], c=copy['cluster'], cmap='rainbow')
-    plt.xlim(0, 6)
-    plt.ylim(0, 2)
+    df['cluster'] = labels
+    plt.scatter(df['x'], df['y'], c=df['cluster'], cmap='rainbow')
+    plt.xlim(-60, 60)
+    plt.ylim(-60, 60)
     plt.title(title)
     plt.show()
 
@@ -114,35 +113,37 @@ def elbow_method(data):
         WCSS.append(kmeans.inertia_)
     return WCSS
 
-if __name__ == '__main__':
+def main():
     # wine
     wine_data = pd.read_csv('wine-clustering.csv')
     print(wine_data)
 
-    wine_cluster_data = wine_data[['Flavanoids', 'Hue']]
+    wine_data_tsne = TSNE(n_components=2, learning_rate='auto', init='random', perplexity=10).fit_transform(X=wine_data)
 
-    plt.scatter(wine_cluster_data['Flavanoids'].to_numpy(), wine_cluster_data['Hue'].to_numpy())
+    plt.scatter(wine_data_tsne[:, 0], wine_data_tsne[:, 1], c='red')
     plt.show()
-    
+
+    wine_data_tsne = pd.DataFrame(data=wine_data_tsne, columns=['x', 'y'])
+
     wine_lnk = MyAgglomerative(n_clusters=1, metric='ward')
-    wine_lnk.fit_predict(wine_cluster_data)
+    wine_lnk.fit_predict(wine_data_tsne)
     plot_dendrogram(wine_lnk.lm)
 
     # Agglo Wine
     wine_my_hierarchy = MyAgglomerative(n_clusters=2, metric='ward')
     wine_my_agglo_start_time = time.time()
-    wine_my_hierarchy_labels = wine_my_hierarchy.fit_predict(wine_cluster_data)
+    wine_my_hierarchy_labels = wine_my_hierarchy.fit_predict(wine_data_tsne)
     wine_my_agglo_end_time = time.time()
-    intra_dist = mean_intracluster_distance(wine_cluster_data, wine_my_hierarchy_labels)
-    inter_dist = mean_intercluster_distance(wine_cluster_data, wine_my_hierarchy_labels)
+    intra_dist = mean_intracluster_distance(wine_data_tsne, wine_my_hierarchy_labels)
+    inter_dist = mean_intercluster_distance(wine_data_tsne, wine_my_hierarchy_labels)
     print(f'Wine My Agglo time: {wine_my_agglo_end_time - wine_my_agglo_start_time}, intra distance: {intra_dist}, inter distance: {inter_dist}')
 
     wine_sk_hierarchy = AgglomerativeClustering(n_clusters=2, metric='euclidean')
     wine_sk_agglo_start_time = time.time()
-    wine_sk_hierarchy_labels = wine_sk_hierarchy.fit_predict(wine_cluster_data)
+    wine_sk_hierarchy_labels = wine_sk_hierarchy.fit_predict(wine_data_tsne)
     wine_sk_agglo_end_time = time.time()
-    intra_dist = mean_intracluster_distance(wine_cluster_data, wine_sk_hierarchy_labels)
-    inter_dist = mean_intercluster_distance(wine_cluster_data, wine_sk_hierarchy_labels)
+    intra_dist = mean_intracluster_distance(wine_data_tsne, wine_sk_hierarchy_labels)
+    inter_dist = mean_intercluster_distance(wine_data_tsne, wine_sk_hierarchy_labels)
     print(f'Wine SK Agglo time: {wine_sk_agglo_end_time - wine_sk_agglo_start_time}, intra distance: {intra_dist}, inter distance: {inter_dist}')
 
 
@@ -158,7 +159,7 @@ if __name__ == '__main__':
     # optimal cluster number
     wcss = elbow_method(countries_clustered_data)
     plot_elbow(wcss, "countries")
-    wcss = elbow_method(wine_cluster_data)
+    wcss = elbow_method(wine_data_tsne)
     plot_elbow(wcss, "wine")
 
     # Agglo
@@ -200,24 +201,24 @@ if __name__ == '__main__':
     print(f'Time on SK DBSCAN Countries is {sk_dbscan_end_time - sk_dbscan_start_time}, , intra distance: {intra_dist}, inter distance: {inter_dist}')
 
     # DBSCAN Wine
-    my_dbscan_wine = MyDBSCAN(metric='euclidean', min_samples=5, eps=0.1)
+    my_dbscan_wine = MyDBSCAN(metric='euclidean', min_samples=5, eps=5)
     my_dbscan_start_time_wine = time.time()
-    my_dbscan_labels_wine = my_dbscan_wine.fit_predict(wine_cluster_data)
+    my_dbscan_labels_wine = my_dbscan_wine.fit_predict(wine_data_tsne)
     my_dbscan_end_time_wine = time.time()
-    intra_dist = mean_intracluster_distance(wine_cluster_data, my_dbscan_labels_wine)
-    inter_dist = mean_intercluster_distance(wine_cluster_data, my_dbscan_labels_wine)
+    intra_dist = mean_intracluster_distance(wine_data_tsne, my_dbscan_labels_wine)
+    inter_dist = mean_intercluster_distance(wine_data_tsne, my_dbscan_labels_wine)
     print(f'Time on MyDBSCAN Wine is {my_dbscan_end_time_wine - my_dbscan_start_time_wine}, , intra distance: {intra_dist}, inter distance: {inter_dist}')
 
-    sk_dbscan_wine = DBSCAN(eps=0.1, min_samples=5, metric='euclidean')
+    sk_dbscan_wine = DBSCAN(eps=5, min_samples=5, metric='euclidean')
     sk_dbscan_start_time_wine = time.time()
-    sk_dbscan_labels_wine = sk_dbscan_wine.fit_predict(wine_cluster_data)
+    sk_dbscan_labels_wine = sk_dbscan_wine.fit_predict(wine_data_tsne)
     sk_dbscan_end_time_wine = time.time()
-    intra_dist = mean_intracluster_distance(wine_cluster_data, sk_dbscan_labels_wine)
-    inter_dist = mean_intercluster_distance(wine_cluster_data, sk_dbscan_labels_wine)
+    intra_dist = mean_intracluster_distance(wine_data_tsne, sk_dbscan_labels_wine)
+    inter_dist = mean_intercluster_distance(wine_data_tsne, sk_dbscan_labels_wine)
     print(f'Time on SK DBSCAN Wine is {sk_dbscan_end_time_wine - sk_dbscan_start_time_wine}, , intra distance: {intra_dist}, inter distance: {inter_dist}')
 
     # EM
-    my_em = MyEM(n_clusters=4, max_iter=1000)
+    my_em = MyEM(n_clusters=3, max_iter=1000)
     my_em_start_time = time.time()
     my_em_labels = my_em.fit_predict(countries_clustered_data)
     my_em_end_time = time.time()
@@ -225,7 +226,7 @@ if __name__ == '__main__':
     inter_dist = mean_intercluster_distance(countries_clustered_data, my_em_labels)
     print(f'Time on MyEM Countries is {my_em_end_time - my_em_start_time}, , intra distance: {intra_dist}, inter distance: {inter_dist}')
 
-    sk_em = GaussianMixture(n_components=4, covariance_type='full')
+    sk_em = GaussianMixture(n_components=3, covariance_type='full')
     sk_em_start_time = time.time()
     sk_em_labels = sk_em.fit_predict(countries_clustered_data)
     sk_em_end_time = time.time()
@@ -234,23 +235,23 @@ if __name__ == '__main__':
     print(f'Time on SK EM Countries is {sk_em_end_time - sk_em_start_time}, intra distance: {intra_dist}, inter distance: {inter_dist}')
 
     # EM Wine
-    my_em_wine = MyEM(n_clusters=3, max_iter=1000)
+    my_em_wine = MyEM(n_clusters=3, max_iter=100)
     my_em_start_time_wine = time.time()
-    my_em_labels_wine = my_em_wine.fit_predict(wine_cluster_data)
+    my_em_labels_wine = my_em_wine.fit_predict(wine_data_tsne)
     my_em_end_time_wine = time.time()
-    intra_dist = mean_intracluster_distance(wine_cluster_data, my_em_labels_wine)
-    inter_dist = mean_intercluster_distance(wine_cluster_data, my_em_labels_wine)
+    intra_dist = mean_intracluster_distance(wine_data_tsne, my_em_labels_wine)
+    inter_dist = mean_intercluster_distance(wine_data_tsne, my_em_labels_wine)
     print(f'Time on MyEM Wine is {my_em_end_time_wine - my_em_start_time_wine}, intra distance: {intra_dist}, inter distance: {inter_dist}')
 
     sk_em_wine = GaussianMixture(n_components=3, covariance_type='full')
     sk_em_start_time_wine = time.time()
-    sk_em_labels_wine = sk_em_wine.fit_predict(wine_cluster_data)
+    sk_em_labels_wine = sk_em_wine.fit_predict(wine_data_tsne)
     sk_em_end_time_wine = time.time()
-    intra_dist = mean_intracluster_distance(wine_cluster_data, sk_em_labels_wine)
-    inter_dist = mean_intercluster_distance(wine_cluster_data, sk_em_labels_wine)
+    intra_dist = mean_intracluster_distance(wine_data_tsne, sk_em_labels_wine)
+    inter_dist = mean_intercluster_distance(wine_data_tsne, sk_em_labels_wine)
     print(f'Time on SK EM Wine is {sk_em_end_time_wine - sk_em_start_time_wine}, intra distance: {intra_dist}, inter distance: {inter_dist}')
 
-
+    wine_data_tsne.copy()
     # Plotting
     plot_countries('Countries MyAgglomerative ', my_aggl_labels, countries_clustered_data)
     plot_countries('Countries SKAgglomerative ', countries_sk_labels, countries_clustered_data)
@@ -261,11 +262,15 @@ if __name__ == '__main__':
     plot_countries('Countries MyEM ', my_em_labels, countries_clustered_data)
     plot_countries('Countries SKEM ', sk_em_labels, countries_clustered_data)
 
-    plot_wine('Wine MyAgglomerative ', wine_my_hierarchy_labels, wine_cluster_data)
-    plot_wine('Wine SkAgglomerative', wine_sk_hierarchy_labels, wine_cluster_data)
+    plot_wine('Wine MyAgglomerative ', wine_my_hierarchy_labels, wine_data_tsne)
+    plot_wine('Wine SkAgglomerative', wine_sk_hierarchy_labels, wine_data_tsne)
 
-    plot_wine('Wine MyDBSCAN', my_dbscan_labels_wine, wine_cluster_data)
-    plot_wine('Wine SKDBSCAN', sk_dbscan_labels_wine, wine_cluster_data)
+    plot_wine('Wine MyDBSCAN', my_dbscan_labels_wine, wine_data_tsne)
+    plot_wine('Wine SKDBSCAN', sk_dbscan_labels_wine, wine_data_tsne)
 
-    plot_wine('Wine MyEM ', my_em_labels_wine, wine_cluster_data)
-    plot_wine('Wine SKEM ', sk_em_labels_wine, wine_cluster_data)
+    plot_wine('Wine MyEM ', my_em_labels_wine, wine_data_tsne)
+    plot_wine('Wine SKEM ', sk_em_labels_wine, wine_data_tsne)
+
+
+if __name__ == '__main__':
+    main()
