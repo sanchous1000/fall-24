@@ -13,6 +13,10 @@
 - [Кластеризация](/tasks/task-01/README.md)
 - [Метрическая классификация](/tasks/task-02/README.md)
 - [Логическая классификация](/tasks/task-03/README.md)
+- [Линейная классификация](/tasks/task-04/README.md)
+- [Метод опорных векторов](/tasks/task-05/README.md)
+- [Регрессия](/tasks/task-06/README.md)
+- [Ансамбли моделей](/tasks/task-07/README.md)
 
 
 ## Результаты выполнения лабораторных работ
