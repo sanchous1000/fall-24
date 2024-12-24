@@ -18,6 +18,8 @@
 После кластеризации:
 ![hierarchy.png](./images/hierarchy.png)
 ![dendro.png](./images/dendro.png)
+Сравнение дендрограммы с библиотечной:
+![dendro_comparison.png](./images/dendro_comparison.png)
 
 По дендрограммам можно определить оптимальное число кластеров для обоих датасетов - 2.
 
